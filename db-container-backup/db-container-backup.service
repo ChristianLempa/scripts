@@ -1,0 +1,11 @@
+[Unit]
+Description=DB Container Backup Script
+Wants=db-container-backup.timer
+
+[Service]
+Type=simple
+ExecStart=sh db-container-backup.sh
+User=xcad
+
+[Install]
+WantedBy=default.target
