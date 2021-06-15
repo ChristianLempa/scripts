@@ -1,0 +1,23 @@
+#!/bin/python3
+
+import fire
+import os
+import uuid
+
+
+class VagrantDeploy:
+
+    def hello(self, name='world'):
+        print(str(uuid.uuid4())[:8])
+        return f"Hello {name}"
+
+
+if __name__ == '__main__':
+
+    try:
+        PROJECTFOLDER = os.environ["CLSCRIPTS_PROJECTFOLDER"]
+    except KeyError:
+        print("Project folder is not existing")
+        exit(1)
+
+    fire.Fire(VagrantDeploy)
