@@ -2,7 +2,7 @@
 
 Hi, there! 👋
 
-I’m Christian, a 35 years old tech enthusiast from Germany, and I love to inspire and educate people in IT.
+I’m Christian, a 35 year-old tech enthusiast from Germany, and I love to inspire and educate people in IT.
 
 This Repository **Scripts** is my personal script collection. Here you'll find bash, and python scripts for various tools, and technologies.
 
