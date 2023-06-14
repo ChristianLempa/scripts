@@ -3,7 +3,7 @@
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Clone Repos for clcreative
-# @raycast.mode inline
+# @raycast.mode compact
 
 # Optional parameters:
 # @raycast.icon https://avatars.githubusercontent.com/u/97734037?s=200&v=4
@@ -15,12 +15,13 @@
 from dotenv import load_dotenv
 import os
 from pathlib import Path
-from repos import getRepos
+from github import Github
+from git import Repo
 
 
 load_dotenv()
 
-github_token = os.getenv("GITHUB_TOKEN")
+g = Github(os.getenv("GITHUB_TOKEN"))
 
 ignored_folders = [
     '.git',
@@ -34,23 +35,28 @@ if __name__ == "__main__":
     # https://docs.github.com/en/rest/reference/repos#list-organization-repositories
     # --
     try:
-        repos = getRepos(github_token, 'clcreative')
-
+        repos = g.get_organization('clcreative').get_repos()
         cloned_repos = []
 
         if repos is not None:
             for repo in repos:
                 # set repo path on local workstation
-                repo_path = f'{ Path.home() }/projects/{repo["owner"]["login"]}/{repo["name"]}'
+                repo_path = f'{ Path.home() }/projects/{repo.owner.login}/{repo.name}'
 
                 # when repo is not existing
                 if not os.path.exists(repo_path):
                     # print(f"  {repo['name']} - {repo['description']}")
-                    os.system(f'git clone git@github.com:{repo["owner"]["login"]}/{repo["name"]}.git {repo_path}')
-                    cloned_repos.append(repo)
+                    Repo.clone_from(repo.ssh_url, repo_path)
+                    cloned_repos.append(repo.name)
 
-            # Show how many repos are cloned
-            print(f"\033[32mcloned: {len(cloned_repos)}\033[0m")
+            if len(cloned_repos) > 0:
+                print(f"cloned {len(cloned_repos)} repos.")
+            else:
+                print("all repos are already cloned.")
+        else:
+            print("error: no repos found in organization")
+            exit(1)
 
     except Exception as e:
-        print(f"error: {e}")
+        print(f"{e.data['message']}")
+        exit(1)
