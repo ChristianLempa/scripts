@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
 
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title List Repos for clcreative
-# @raycast.mode fullOutput
-
-# Optional parameters:
-# @raycast.icon https://avatars.githubusercontent.com/u/97734037?s=200&v=4
-
-# Documentation:
-# @raycast.author ChristianLempa
-# @raycast.authorURL https://raycast.com/ChristianLempa
-
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -32,10 +20,10 @@ ignored_folders = [
 if __name__ == "__main__":
     try:
         repos = g.get_organization('clcreative').get_repos()
-        missing_repos = []
 
         if repos is not None:
             for repo in repos:
+                # check if repo has updates
                 # set repo path on local workstation
                 repo_path = f'{ Path.home() }/projects/{repo.owner.login}/{repo.name}'
 
@@ -43,7 +31,6 @@ if __name__ == "__main__":
 
                 # when repo is not existing
                 if not os.path.exists(repo_path):
-                    missing_repos.append(repo.name)
                     print(f"\033[0;31m○\033[0m {repo.name}")
                 else:
                     # check if repo has untracked files
