@@ -2,11 +2,11 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Clone Repos for clcreative
+# @raycast.title Clone all my GitHub Repos
 # @raycast.mode compact
 
 # Optional parameters:
-# @raycast.icon https://avatars.githubusercontent.com/u/97734037?s=200&v=4
+# @raycast.icon https://avatars.githubusercontent.com/u/28359525?v=4
 
 # Documentation:
 # @raycast.author ChristianLempa
@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 from github import Github
 from git import Repo
+import traceback
 
 
 load_dotenv()
@@ -31,11 +32,11 @@ ignored_folders = [
 
 
 if __name__ == "__main__":
-    # Clone Repositories for clcreative
+    # Clone Repositories for christianlempa
     # https://docs.github.com/en/rest/reference/repos#list-organization-repositories
     # --
     try:
-        repos = g.get_organization('clcreative').get_repos()
+        repos = g.get_user('christianlempa').get_repos()
         cloned_repos = []
 
         if repos is not None:
@@ -57,6 +58,6 @@ if __name__ == "__main__":
             print("error: no repos found in organization")
             exit(1)
 
-    except Exception as e:
-        print(f"{e.data['message']}")
+    except Exception:
+        traceback.format_exc()
         exit(1)

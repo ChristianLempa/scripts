@@ -2,11 +2,11 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Check Repos for clcreative
+# @raycast.title Check all my GitHub Repos
 # @raycast.mode compact
 
 # Optional parameters:
-# @raycast.icon https://avatars.githubusercontent.com/u/97734037?s=200&v=4
+# @raycast.icon https://avatars.githubusercontent.com/u/28359525?v=4
 
 # Documentation:
 # @raycast.author ChristianLempa
@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 from github import Github
+import traceback
 
 
 load_dotenv()
@@ -31,7 +32,7 @@ ignored_folders = [
 
 if __name__ == "__main__":
     try:
-        repos = g.get_organization('clcreative').get_repos()
+        repos = g.get_user('christianlempa').get_repos()
         missing_repos = []
 
         if repos is not None:
@@ -51,6 +52,6 @@ if __name__ == "__main__":
             print("Error: No repos found in organization")
             exit(1)
 
-    except Exception as e:
-        print(f"{e.data['message']}")
+    except Exception:
+        traceback.format_exc()
         exit(1)
